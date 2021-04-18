@@ -1,4 +1,5 @@
 console.log("app.js is loaded")
+// portions of this code are taken from instructor's office hours tutorial
 
 // create a stub for the functions that will be created
 function DrawBarGraph(sampleID) {
@@ -7,6 +8,28 @@ function DrawBarGraph(sampleID) {
     d3.json("data/samples.json").then(data => {
         var samples = data.samples;
         var resultsArray = samples.filter(s => s.id == sampleID);
+        var result = resultsArray[0]
+
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
+
+        yticks = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+
+        var barData = {
+            x: sample_values.slice(0,10).reverse(),
+            y: yticks,
+            type: "bar",
+            text: otu_labels.slice(0,10).reverse(),
+            orientation: "h"
+        }
+        var barArray = [barData];
+        var barLayout = {
+            title: "Top 10 Bacteria Cultures Found",
+            margin: {t:30, 1:150}
+        }
+        Plotly.newPlot("bar", barArray, barLayout);
+
     });
 }
 
