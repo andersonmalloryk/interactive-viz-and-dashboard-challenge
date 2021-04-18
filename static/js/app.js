@@ -31,11 +31,43 @@ function DrawBarGraph(sampleID) {
         Plotly.newPlot("bar", barArray, barLayout);
 
     });
-}
+};
 
 function DrawBubbleChart(sampleID) {
     console.log(`DrawBubbleChart(${sampleID})`);
-}
+
+    d3.json("data/samples.json").then(data => {
+        var samples = data.samples;
+        var resultsArray = samples.filter(s => s.id == sampleID);
+        var result = resultsArray[0]
+        // Use otu_ids for the x values and marker color
+        var otu_ids = result.otu_ids;
+        // Use sample_values for the y values and marker size
+        var sample_values = result.sample_values;
+        // Use otu_labels for the text values.
+        // var otu_labels = result.otu_labels;
+
+        var trace1 = {
+            x: otu_ids,
+            y: sample_values,
+            mode: 'markers',
+            marker: {
+                color: ['rgb(93, 164, 214)', 'rgb(255, 144, 14)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'],
+                size: sample_values
+            }
+        };
+
+        var data = [trace1];
+        var layout = {
+            title: 'Samples',
+            showlegend: false,
+            height: 600,
+            width: 600
+        };
+        Plotly.newPlot("myDiv", data, layout);
+    });
+};
+
 
 function ShowMetaData(sampleID) {
     console.log(`ShowMetaData(${sampleID})`);
