@@ -13,6 +13,22 @@ function ShowMetaData(sampleID) {
     console.log(`ShowMetaData(${sampleID})`);
 }
 
+d3.selectAll("#selDataset").on("change", optionChanged);
+
+// function optionChanged(){
+//     var selector = d3.select("#selDataset");
+//     var sampleID = selector.property("value");
+// };
+function optionChanged() {
+    console.log("optionChanged")
+    var selector = d3.select("#selDataset");
+    var sampleID = selector.property("value")
+
+    DrawBarGraph(sampleID);
+    DrawBubbleChart(sampleID);
+    ShowMetaData(sampleID);
+};
+
 function InitDashboard(){
     console.log("InitDashboard()");
 
@@ -27,15 +43,7 @@ function InitDashboard(){
             selector.append("option")
                 .text(sampleID)
                 .property("value", sampleID)
-            
         });
-
-        var id = sampleNames[0];
-
-        DrawBarGraph(id);
-        DrawBubbleChart(id);
-        ShowMetaData(id);
-
     })
 
     // update bar graph
