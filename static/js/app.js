@@ -70,18 +70,18 @@ function DrawBubbleChart(sampleID) {
 
 function ShowMetaData(sampleID) {
     // read out the id, ethnicity, gender, age, location, bbtype, and wfreq of the id
+    var demoInfo = d3.select(".panel-body")
 
     d3.json("data/samples.json").then(data => {
         var metadata = data.metadata;
         var resultsArray = metadata.filter(m => m.id == sampleID);
-
-        var demoInfo = d3.select(".panel-body")
-        
+       
         resultsArray.forEach((set) => {
             Object.entries(set).forEach(([key,value]) => {
-                demoInfo.text(`${key}: ${value}`)
+                var text = demoInfo.append("p");
+                text.text(`${key}: ${value}`)
             });
-        });        
+        });
     });
 };
 
@@ -92,8 +92,6 @@ function GaugeChart(sampleID) {
         var resultsArray = metadata.filter(m => m.id == sampleID);
         var result = resultsArray[0]
         var scrubs = result.wfreq;
-        console.log(result);
-
         var data = [
             {
                 type: "indicator",
@@ -133,13 +131,19 @@ function GaugeChart(sampleID) {
     });
 }
 
+function clearMetaData(){
+    document.getElementsByClassName("p").innerHTML = "";
+};
+
 d3.selectAll("#selDataset").on("change", optionChanged);
 
 function optionChanged() {
+    clearMetaData();
+
     var selector = d3.select("#selDataset");
     var sampleID = selector.property("value")
 
-    // update bar graph
+    //update bar graph
     DrawBarGraph(sampleID);
     //update bubble chart
     DrawBubbleChart(sampleID);
@@ -161,6 +165,7 @@ function InitDashboard() {
                 .text(sampleID)
                 .property("value", sampleID)
         });
+
         var id = sampleNames[0]
 
         DrawBarGraph(id);
