@@ -82,16 +82,64 @@ function ShowMetaData(sampleID) {
         var demographicInfo = content[0]
 
         demoInfo.text(
-            `ID: ${demographicInfo.id} "<br>"
-            Ethnicity: ${demographicInfo.ethnicity}
-            Gender: ${demographicInfo.gender} 
-            Age: ${demographicInfo.age} 
-            Location: ${demographicInfo.location} 
-            Bellybutton type: ${demographicInfo.bbtype} 
-            WFreq: ${demographicInfo.wfreq}`
+            `ID: ${demographicInfo.id}` + 
+            `Ethnicity: ${demographicInfo.ethnicity}` +
+            `Gender: ${demographicInfo.gender}` +
+            `Age: ${demographicInfo.age}` +
+            `Location: ${demographicInfo.location}` +
+            `Bellybutton type: ${demographicInfo.bbtype}` +
+            `WFreq: ${demographicInfo.wfreq}`
             );
     });
 };
+
+function GaugeChart(sampleID) {
+
+    d3.json("data/samples.json").then(data => {
+        var metadata = data.metadata;
+        var resultsArray = metadata.filter(m => m.id == sampleID);
+        var result = resultsArray[0]
+        var scrubs = result.wfreq;
+        console.log(result);
+
+        var data = [
+            {
+                type: "indicator",
+                mode: "gauge+number+delta",
+                value: scrubs,
+                title: { text: "Belly Button Washing Frequency", font: { size: 24 } },
+                gauge: {
+                    axis: { range: [null, 9], tickwidth: 4, tickcolor: "black" },
+                    bgcolor: "white",
+                    borderwidth: 2,
+                    steps: [
+                        { range: [0, 1], color: "#ffffcc" },
+                        { range: [1, 2], color: "#eeffcc" },
+                        { range: [2, 3], color: "#d9f0a3" },
+                        { range: [3, 4], color: "#addd8e" },
+                        { range: [4, 5], color: "#78c679" },
+                        { range: [5, 6], color: "#41ab5d" },
+                        { range: [6, 7], color: "#238443" },
+                        { range: [7, 8], color: "#238443" },
+                        { range: [8, 9], color: "#005a32" }
+                    ],
+                    threshold: {
+                        line: { color: "red", width: 4 },
+                        thickness: 0.75,
+                        value: scrubs
+                    }
+                }
+            }
+        ];
+        var layout = {
+            width: 500,
+            height: 400,
+            margin: { t: 25, r: 25, l: 25, b: 25 },
+            font: { color: "black", family: "Arial" }
+        };
+        Plotly.newPlot('gauge', data, layout);
+    });
+}
 
 d3.selectAll("#selDataset").on("change", optionChanged);
 
@@ -105,6 +153,8 @@ function optionChanged() {
     DrawBubbleChart(sampleID);
     //update demographic information
     ShowMetaData(sampleID);
+    //update gauge
+    GaugeChart(sampleID);
 };
 
 function InitDashboard() {
@@ -124,6 +174,7 @@ function InitDashboard() {
         DrawBarGraph(id);
         DrawBubbleChart(id);
         ShowMetaData(id);
+        GaugeChart(id);
     });
 };
 
