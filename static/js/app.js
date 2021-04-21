@@ -68,40 +68,24 @@ function DrawBubbleChart(sampleID) {
     });
 };
 
-// function ShowMetaData(sampleID) {
+function ShowMetaData(sampleID) {
     // read out the id, ethnicity, gender, age, location, bbtype, and wfreq of the id
-    // d3.json("data/samples.json").then(data => {
-    //     var metadata = data.metadata;
-    //     var resultsArray = metadata.filter(m => m.id == sampleID);
-    //     var result = resultsArray[0]
-    //     var id = result.id;
-    //     var ethnicity = result.ethnicity;
-    //     var gender = result.gender;
-    //     var age = result.age;
-    //     var location = result.location;
-    //     var bbtype = result.bbtype;
-    //     var wfreq = result.wfreq;
-    // });
 
-    // d3.json("data/samples.json").then(data => {
-    //     var metadata = data.metadata;
-    //     var resultsArray = metadata.filter(m => m.id == sampleID);
-    //     var result = resultsArray[0]
+    d3.json("data/samples.json").then(data => {
+        var metadata = data.metadata;
+        var resultsArray = metadata.filter(m => m.id == sampleID);
+        var demoInfo = d3.select(".panel-body")
+        var content = []
 
-    //     console.log(result)
+        resultsArray.forEach(element => content.push(element));
 
-    //     d3.select(".sample-metadata").text("does this work?";)
+        console.log(content[0]);
 
-        // result.forEach((set) => {
-        //     Object.defineProperties(set).forEach(([key,value]) => {
-        //     console.log.text(key, value);
-        //     });
-            
-        // });
+        demoInfo.text(content[0]);
 
-//     });
+    });
 
-// };
+};
 
 d3.selectAll("#selDataset").on("change", optionChanged);
 
