@@ -75,6 +75,8 @@ function ShowMetaData(sampleID) {
     d3.json("data/samples.json").then(data => {
         var metadata = data.metadata;
         var resultsArray = metadata.filter(m => m.id == sampleID);
+
+        clearMetaData();
        
         resultsArray.forEach((set) => {
             Object.entries(set).forEach(([key,value]) => {
@@ -132,13 +134,13 @@ function GaugeChart(sampleID) {
 }
 
 function clearMetaData(){
-    document.getElementsByClassName("p").innerHTML = "";
+    document.getElementById("sample-metadata").innerHTML = "";
 };
 
 d3.selectAll("#selDataset").on("change", optionChanged);
 
 function optionChanged() {
-    clearMetaData();
+
 
     var selector = d3.select("#selDataset");
     var sampleID = selector.property("value")
@@ -156,6 +158,7 @@ function optionChanged() {
 function InitDashboard() {
     // populate dropdown with test subject id numbers
     var selector = d3.select("#selDataset");
+    
 
     d3.json("data/samples.json").then(data => {
         var sampleNames = data.names;
@@ -167,7 +170,6 @@ function InitDashboard() {
         });
 
         var id = sampleNames[0]
-
         DrawBarGraph(id);
         DrawBubbleChart(id);
         ShowMetaData(id);
