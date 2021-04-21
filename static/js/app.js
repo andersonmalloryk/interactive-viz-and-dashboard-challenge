@@ -74,22 +74,14 @@ function ShowMetaData(sampleID) {
     d3.json("data/samples.json").then(data => {
         var metadata = data.metadata;
         var resultsArray = metadata.filter(m => m.id == sampleID);
+
         var demoInfo = d3.select(".panel-body")
-        var content = []
-
-        resultsArray.forEach(element => content.push(element));
-
-        var demographicInfo = content[0]
-
-        demoInfo.text(
-            `ID: ${demographicInfo.id}` + 
-            `Ethnicity: ${demographicInfo.ethnicity}` +
-            `Gender: ${demographicInfo.gender}` +
-            `Age: ${demographicInfo.age}` +
-            `Location: ${demographicInfo.location}` +
-            `Bellybutton type: ${demographicInfo.bbtype}` +
-            `WFreq: ${demographicInfo.wfreq}`
-            );
+        
+        resultsArray.forEach((set) => {
+            Object.entries(set).forEach(([key,value]) => {
+                demoInfo.text(`${key}: ${value}`)
+            });
+        });        
     });
 };
 
