@@ -79,14 +79,17 @@ function ShowMetaData(sampleID) {
 
         resultsArray.forEach(element => content.push(element));
 
-        demographicInfo = content[0]
+        var demographicInfo = content[0]
 
-        console.log(demographicInfo)
-        
         demoInfo.text(
-            `ID: ${demographicInfo.id}`"\n"
-            `Ethnicity: ${demographicInfo.ethnicity}`
-            )
+            `ID: ${demographicInfo.id} "<br>"
+            Ethnicity: ${demographicInfo.ethnicity}
+            Gender: ${demographicInfo.gender} 
+            Age: ${demographicInfo.age} 
+            Location: ${demographicInfo.location} 
+            Bellybutton type: ${demographicInfo.bbtype} 
+            WFreq: ${demographicInfo.wfreq}`
+            );
     });
 };
 
