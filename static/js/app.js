@@ -1,15 +1,11 @@
 console.log("app.js is loaded")
 // portions of this code are taken from instructor's office hours tutorial
 
-// create a stub for the functions that will be created
 function DrawBarGraph(sampleID) {
-    console.log(`DrawBarGraph(${sampleID})`);
-
     d3.json("data/samples.json").then(data => {
         var samples = data.samples;
         var resultsArray = samples.filter(s => s.id == sampleID);
         var result = resultsArray[0]
-
         var otu_ids = result.otu_ids;
         var otu_labels = result.otu_labels;
         var sample_values = result.sample_values;
@@ -29,13 +25,10 @@ function DrawBarGraph(sampleID) {
             margin: { t: 30, 1: 150 }
         }
         Plotly.newPlot("bar", barArray, barLayout);
-
     });
 };
 
 function DrawBubbleChart(sampleID) {
-    console.log(`DrawBubbleChart(${sampleID})`);
-
     d3.json("data/samples.json").then(data => {
         var samples = data.samples;
         var resultsArray = samples.filter(s => s.id == sampleID);
@@ -57,30 +50,62 @@ function DrawBubbleChart(sampleID) {
                 '<i>OTU Ids</i> %{x}<br>',
             marker: {
                 size: sample_values,
-                color: sample_values}
+                color: otu_ids}
         };
 
-var data = [trace1];
-var layout = {
-    title: 'Samples',
-    xaxis: { title: 'OTU Ids' },
-    showlegend: false,
-    height: 600,
-    width: 1200
-};
-Plotly.newPlot("bubble", data, layout);
+        var data = [trace1];
+        
+        var layout = {
+            title: 'Samples',
+            // xaxis: { title: `Otu Labels(${otu_labels})`},
+            xaxis: {title: 'OTU Labels'},
+            showlegend: false,
+            height: 600,
+            width: 1200
+        };
+
+    Plotly.newPlot("bubble", data, layout);
     });
 };
 
+// function ShowMetaData(sampleID) {
+    // read out the id, ethnicity, gender, age, location, bbtype, and wfreq of the id
+    // d3.json("data/samples.json").then(data => {
+    //     var metadata = data.metadata;
+    //     var resultsArray = metadata.filter(m => m.id == sampleID);
+    //     var result = resultsArray[0]
+    //     var id = result.id;
+    //     var ethnicity = result.ethnicity;
+    //     var gender = result.gender;
+    //     var age = result.age;
+    //     var location = result.location;
+    //     var bbtype = result.bbtype;
+    //     var wfreq = result.wfreq;
+    // });
 
-function ShowMetaData(sampleID) {
-    console.log(`ShowMetaData(${sampleID})`);
-}
+    // d3.json("data/samples.json").then(data => {
+    //     var metadata = data.metadata;
+    //     var resultsArray = metadata.filter(m => m.id == sampleID);
+    //     var result = resultsArray[0]
+
+    //     console.log(result)
+
+    //     d3.select(".sample-metadata").text("does this work?";)
+
+        // result.forEach((set) => {
+        //     Object.defineProperties(set).forEach(([key,value]) => {
+        //     console.log.text(key, value);
+        //     });
+            
+        // });
+
+//     });
+
+// };
 
 d3.selectAll("#selDataset").on("change", optionChanged);
 
 function optionChanged() {
-    console.log("optionChanged")
     var selector = d3.select("#selDataset");
     var sampleID = selector.property("value")
 
@@ -93,8 +118,6 @@ function optionChanged() {
 };
 
 function InitDashboard() {
-    console.log("InitDashboard()");
-
     // populate dropdown with test subject id numbers
     var selector = d3.select("#selDataset");
 
