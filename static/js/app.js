@@ -79,12 +79,15 @@ function ShowMetaData(sampleID) {
 
         resultsArray.forEach(element => content.push(element));
 
-        console.log(content[0]);
+        demographicInfo = content[0]
 
-        demoInfo.text(content[0]);
-
+        console.log(demographicInfo)
+        
+        demoInfo.text(
+            `ID: ${demographicInfo.id}`"\n"
+            `Ethnicity: ${demographicInfo.ethnicity}`
+            )
     });
-
 };
 
 d3.selectAll("#selDataset").on("change", optionChanged);
